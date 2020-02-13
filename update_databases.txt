@@ -1,0 +1,40 @@
+En este update hablamos de la base de datos que vamos a usar, SQLAlchemy. SQLAlchemy no te deja tirar las querys convencionales (conextando con una db y tirando querys como un campeon), sino que te hace usar una sintaxis mas comparable a la de python (nada de SELECTS UPDATES o eso).
+Esto se debe a que SQLAlchemy es para bases de datos no relacionales o NoSQL ya que no se pueden tirar querys, casualmente.
+
+- Primero, importamos el modulo en app.py
+
+	- from flask_sqlalchemy import SQLAlchemy
+
+- se agrega en el codigo
+
+	- app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db' -- lo primero antes del = es para indicar donde va a estar la base, es una variable. Lo segundo te indica que se va a usar, en este caso, seteamos la variable a un archivo de nombre test.db (sqlite)
+	Se usan 3 barras (///) para indicar que es una ruta relativa, con 4 marcas una absoluta. Aca ponemos en /// porque no querria especificar una ruta absoluta, pretendo mantener todo dentro de la carpeta del proyecto.
+
+	- db = SQLAlchemy(app) -- esto inicializa la base de datos (tomando app como argmento)
+
+- Ahora hay que crear un modelo para la DB. Hay que tener en cuenta que trabajamos con SQLAlchemy, y entender un par de cosas.
+  SQLAlchemy es un ORM (object relational mapper) para python, de codigo abierto. Lo que permite hacer y la diferencia con una base de datos comun es que con SQLAlchemy se usan "entidades de alto nivel" como clases, objetos y metodos en lugar de tablas de SQL, que luego son convertidas por tu propio codigo en comandos de database. SQLAlchemy oficia de ORM para varios sistemas relacionales como PostgreSQL, SQLite (en uso ahora), MySQL, etc 
+
+-Con esto en mente podemos proceder a crear el modelo, usando una class para SQLAlchemy:
+
+	- Class lista(db.Model) -- usamos una clase para crear un modelo de base de datos para SQLAlchemy, que este posteriormente va a terminar convirtiendo a SQL.
+	
+		id = db.Column(db.Integer, primary_key=True)
+		content = db.Column(db.String(200), nullable = False)
+		date_created = db.Column(db.DateTime, default=datetime.utcnow)
+
+		- como la app va a ser para crear y modificar tareas (eso quiso hacer el del tutorial que por cierto es Jake Rieger para freeCodeCamp), solo tendra estas columnas (id, content y date_created). vemos que para hacerlo, lo que se hace en el objeto de SQLAlchemy es bastante sencillo, se crea una variable que oficia de columna, a la cual se le asigna las propiedades de la misma. El formato es variable = db.Column(db.TipoDeDato, propiedades), como el ejemplo de date_created = db.Column(db.DateTime - para setear que la columna sea del tipo DateTime - y se le agrega una propiedad (para verlas, la verdad lo mejor que podes hacer es buscar una cheat sheet en alguna pagina) que en este caso es que por defecto traiga la hora actual (default=datetime.utcnow). IMPORTANTE!!!! QUE SE SEPA QE PARA HACER ESTO HAY QE IMPORTAR DATETIME.
+
+		def __repr__(self):
+			return '<Task %r>' % self.id -- lo que se hace es usar la funcion repr en la clase, que sirve para devolver una string cuando se llama a un elemento de la clase (es decir a un item de la lista de tareas). La sintaxis la verdad no tengo idea por que se hace asi, este paso simplemente lo estoy copiando del tutorial (espero en otros tutoriales entender un poco mejor o poder prescindir de esto). Lo unico que llego a deducir es que te returnea una string que dice <Task > y el numero de ID de la tarea en cuestion, y que el %r y posterior % self.id regresa el numero de ID de self (o sea de id del objeto lista)
+
+- Ahora vamos a la terminal, y ahi vamos a crear la base de datos con el codigo presente:
+
+	- python3 -- abrimos python desde la consola
+	- from app import db -- vemos que se crea una carpeta __pycache__ 
+	- db.create_all() -- al presionar enter, crea el archivo test.db, como se indico previamente.
+
+Con todo eso ya esta creada la base de datos y lista para usar. Lo proximo que se viene es para poder postear, editar y eliminar tareas (el crud, basicamente). 
+Va a ser un poco mucho de HTML con Jinja2 Syntax, la gracia es que vamos a poder usar la isntaxis de Jinja para los loops, condicionales y eso.
+Se le va a dart el formato a la app tambien.
+	
