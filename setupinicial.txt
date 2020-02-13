@@ -1,0 +1,21 @@
+Lo que se hizo hasta ahora:
+
+- Creo un entorno con virtualenv
+  - pip3 install virtualenv 
+  - hay que ejecutar el script activate para que se inicialice el entorno virtual
+  - para esto se suele usar el comando "source env/Scripts/activate". Al estar en entorno Windows, no se puede (solo funciona para Posix o cualquier cosa menos windows), asique tuve que entrar en la carpeta manualmente (cd \env\scripts) y desde ahi ejecutar &.\activate. 
+  - ahi me tope con que no estaba activada la ejecucion de scripts, con el comando Get-ExecutionPolicy en powershell verifico que estaba en Restricted. Desde una terminal de PS (con privilegios de admin) se ejecuta Set-ExecutionPolicy Unrestricted y ya podes correr el activate. El entorno quedo activado y ya estoy en el
+  - corro pip3 install flask flask-sqlalchemy para bajar las herramientas
+  - creo el archivo app.py:
+      from flask import Flask -- importo las librerias necesarias (de momento), luego se agrega render_template, lo que usaremos en la funcion return por ahora para referenciar un archivo index.html que creamos luego en la carpeta templates. Para eso, creamos dos carpetas, primero templates y despues static. En templates se crea el index.html, ya que usaremos la plantilla para que la devuelva la pagina al visualizarla. En la carpeta static, estara el main.css solamente de momento 
+
+      app = Flask(__name__) -- seteo la app
+      @app.route('/') -- esto crea un index route para que al ingresar a la pagina no te tire 404, para eso es el decorador
+      def index(): -- definimos la funcion para el enrutamiento
+      	return "Hello world" -- luego cambia a return render_template('index.html'), asi referenciamos al archivo a abrir. En lugar de Hello World, el sitio abre el contenido del archivo index.html
+
+     if __name__ = "__main__":
+     	app.run(debut=True) -- Esto lo que hace es inicializar en modo debug para que figuren los errores en la pagina (de haberlos)
+
+- corremos la app (python app.py) y vemos que el sitio se ejecuta ok, en el puerto 5000 de localhost.
+
