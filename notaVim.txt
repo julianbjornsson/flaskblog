@@ -1,0 +1,16 @@
+Este archivo es para clarificar algo. Para editar los textos y demas estoy usando VIM netamente, ya que  es un metodo para volver a familiarizarme con el amado por muchos odiado por muchos mas aun editor. 
+Los ocmandos que estoy usando ahora (y los que recuerdo sin ver una cheatsheet, porque que gracia tendria sino):
+
+- yy (copiar linea)
+- dd (borrar linea)
+- p (pegar)
+- v (modo visual, podes seleccionar texto asi y dentro del seleccionado, y copia)
+- G (ir a la ultima lionea)
+- gg (good game, digo... ir a la primera linea)
+- u (deshacer)
+- Ctrl+R (rehacer el ultimo undo)
+- i (modo insertar)
+- Esc (para navegar entre comandos-modos)
+- :w guarda, :wq guarda y sale, :q sale, el ! despues de cualquiera de estos te lo fuerza
+- $ - ir al final de la linea
+
