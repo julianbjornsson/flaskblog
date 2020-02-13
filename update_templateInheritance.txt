@@ -1,0 +1,44 @@
+En este update vamos a incluir templates y a ver un poco de template inheritance.
+
+Basicamente, template inheritance es crear un archivo HTML maestro que contiene el "esqueleto" de como se va a ver cada pagina, y el resto lo hereda de esa. Mas uqe nada es para ahorrar escribir muchas veces lo mismo.
+
+- creamos otro archivo en templates llamado base.html. Esto nos deja con "base.html" con codigo html. A raiz de eso, en el header por ejemplo creamos lo siguiente, usando sintaxis de Jinja2, que es el template engine uqe usa flask
+
+	- {% block head %} {% endblock %} -- basicamente esto crea un "bloque" en el template, siendo un bloque una sentencia de Jinja2, que vamos a usar para insertar codigo en todas las paginas que usen el template
+
+	- {% block body %} {% endblock %} -- basicamente lo mismo, pero con el elemento <body> de html 
+
+- luego volvemos al archivo index.html. Borramos todo, y usamos la sintaxis recien creada con Jinja2 para linkearlo y usar el template de base.html. Queda algo asi:
+
+	{% extends 'base.html' %} -- esto indica que se usara ese archivo como template (base.html)
+
+	{% block head %} -- se ordena asi para mayor comodidad y lectura. ahi tenemos los elementos head y body del codigo html, tomando base.html como template.
+
+	<h1> Template test </h1> -- Agregamos un header que diga template test para chequearlo. No olvidemos que cuando se carga el sitio llama a index.html, que solo tendra este codigo con sintaxis de Jinja2
+
+	{% endblock %} 
+
+	{% block body %}
+
+	{% endblock %} 
+
+esto es todo lo que hay que hacer  para casi todas las paginas de tu website , lo uniuco que hay que hacer es linkear el block y demas, como linkear stylesheets, etc. 
+
+- con la template creada, empezamos con el contenido estatico. 
+- En la carpeta static, creamos otra subcarpeta css y dentro el archivo main.css.
+- Añadimos algun style basico:
+
+	body {
+		margin: 0;
+		font-family: sans-serif;
+	} -- un estilo para probar, aplica al cuerpo.
+
+- En el base.html, añadimos el link al stylesheet:
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"> 
+	-- Este es un poco largo: lo que se hace es linkear la hoja de CSS, pero en ugar de como seria normalmente (href="static/css/main.css), hay que hacerlo con la sintaxis de Jinja2. IMPORTANTE tener en cuenta uqe desde app.py hay que importar tambien la libreria (url_for).
+	ya con eso queda relacionada la hoja de css y se puede usar (en este caos pone ese estilo al body)
+
+Por el momento eso es todo lo que voy a hacer de templates basicos (muy basicos). el proximo update va a venir con lo que seria bases de datos.
+
+
