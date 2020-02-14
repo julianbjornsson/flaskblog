@@ -7,7 +7,7 @@
 {% block body %} 
 
 <div class="content">
-    <table border="1">
+    <table  align="center", border="1">
         <tr>
             <th>Task</th>
             <th>Added</th>
@@ -26,8 +26,8 @@
         </tr>
     {% endfor %}
     </table>
-
-    <form action="/" method="POST">
+    <br>
+    <form action="/" method="POST" align="center">
         <input type="text" name="content" id="content">
         <input type="submit" value="Añadir Tarea">
     </form>
