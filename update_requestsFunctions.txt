@@ -1,0 +1,53 @@
+En este apartado se añaden varias cosas, entre ellas la funcionalidad de la webapp
+
+en la funcion index() se añade primero un condicional:
+
+	if request.method == 'POST': -- evalua, si el method http usado es POST
+		task_content = request.form['content'] -- creamos una variable, con valor de request.form['content'] , request para usar el modulo, form para el formulario creado, y le pasamos el valor content, que es el id del input del formulario que queremos obtener el contenido (content) . Es decir, task_content es igual al contenido del input field que creamos.
+
+	new_task = lista(content=task_content) -- ahora creamos un objeto de la clase lista, cuyo contenido va a ser el contenido del input. Ahora tenemos el modelo de lista, ahora queda pushearlo a la db
+
+		try:
+			db.session.add(new_task) -- db.session para manipular las acciones a db, usamos el metodo .add y especificamos new_task (ver arriba)
+			db.session.commit() -- commiteamos los cambios
+			return  redirect('/') -- redirigimos nuevamente a home (HAY QE IMPORTAR REDIRECT)
+
+		except:	
+			return 'Hubo un problema añadiendo la tarea' -- en caso de que falle.
+	
+	else:
+		tasks = lista.query.order_by(lista.date_created).all() -- creamos una variable que toma todas las entradas en la base y las ordena por fecha de creacion 
+		return render_template('index.html', tasks=tasks) -- pasamos task al template (honestamente no entiendo bien que es o que hace)
+
+	
+
+- Volvemos al HTML y usamos Jinja2 syntax para modificar algunas cosas. Entre la row que tiene la info maleable}:
+
+	
+	{% for task in tasks %}  -- loopeamos como para poblarlo
+		<tr>
+			<td> {{ task.content }} </td> -- seteamos que la row tenga los contenidos de la variable task (que si leemos arriba notamos que son los uqe se introducen en el campo input del formulario
+			<td> {{ task.date_created.date() }} </td> -- seteamos que tenga la fecha de creacion (usando el modulo datetime)
+		</tr>
+	{% endfor %} -- terminamos el loop
+
+
+A este punto deberiamos poder agregar una tarea y visualizarla. En esto que hicimos antes, resumiendo:
+
+	- Seteamos que use el method POST
+	- creamos la variable task_content para que tome el contenido del input
+	- creamos la variable new_task y le damos el valor de content, haciendolo objeto de la clase ( - lista(content=task_content)
+	EN LA BASE:
+	- usamos el metodo add y pasamos new task (o sea el content del input, resumidamente)
+	- commiteamos
+	- redirigimos a index
+
+	- creamos una variable tasks que es igual a los objetos de la clase lista ya grabados ordenados por fecha
+	-returnea la lista creada en index.html
+
+Usando Jinja2 en html:
+	-seteamos que la primera columna contenga el contenido de la tarea (new_task)
+	-idem anterior, en segunda fila, que sea la fecha
+
+
+lo proximo seria agregar las funciones para modificar o eliminar tareas.

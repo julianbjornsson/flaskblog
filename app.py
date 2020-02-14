@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -15,9 +15,23 @@ class lista(db.Model):
     def __repr__(self):
         return '<Task %r>' % self.id
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    if request.method == "POST":
+        task_content =  request.form['content']
+        new_task = lista(content=task_content)
+
+        try:
+            db.session.add(new_task)
+            db.session.commit()
+            return redirect('/')
+        except:
+            return 'Hubo un problema al procesar su solicitud'
+    else:
+        tasks = lista.query.order_by(lista.date_created).all()
+        return render_template('index.html', tasks=tasks)
+
+
 
 
 if __name__ == "__main__":
