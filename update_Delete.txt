@@ -1,0 +1,23 @@
+- Agrego la funcion para eliminar
+
+	@app.route('/delete'<int:id>') -- definimos el enrutamiento a /delete/el id de la task
+	def delete(id):
+		task_to_delete = lista.query.get_or_404(id) -- hace una query para tomar el post, ubicandolo por ID. Si existe lo toma, si no te da 404
+
+		try: 
+			db.session.delete(task_to_delete) -- elimina de la base la tarea a borrar
+			db.session.commit()
+			return redirect('/') -- devuelve a route home
+		except:
+			return 'Hubo un problema al procesar su solicitud'
+
+- Volvemos a tocar el html, esta vez para añadir la funcionalidad al boton Delete
+
+En el td de Acciones:
+
+	- <a href="/delete/{{ task.id }}"> Delete </a> 
+
+Corto, pero eso es todo para borrar. Lo proximo es updatear
+
+
+

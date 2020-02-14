@@ -31,6 +31,17 @@ def index():
         tasks = lista.query.order_by(lista.date_created).all()
         return render_template('index.html', tasks=tasks)
 
+@app.route('/delete/<int:id>')
+def delete(id):
+    task_to_delete = lista.query.get_or_404(id)
+
+    try:
+        db.session.delete(task_to_delete)
+        db.session.commit()
+        return redirect('/')
+    except:
+        'Hubo un problema al procesar su solicitud'
+        
 
 
 
