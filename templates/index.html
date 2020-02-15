@@ -7,6 +7,12 @@
 {% block body %} 
 
 <div class="content">
+    <h1 style="text-align: center;"> Task Master </h1>
+
+    {% if tasks|length < 1 %}
+    <h4 style="text-align: center;">No hay tareas para mostrar. Agrege una debajo</1>
+    <br>
+    {% else %}
     <table  align="center", border="1">
         <tr>
             <th>Task</th>
@@ -21,13 +27,15 @@
             <td>
                 <a href="/delete/{{ task.id }}">Delete</a>
                 <br>
-                <a href="">Update</a>
+                <a href="/update/{{ task.id }}">Update</a>
             </td>
         </tr>
     {% endfor %}
     </table>
+    {% endif %}
     <br>
     <form action="/" method="POST" align="center">
+        
         <input type="text" name="content" id="content">
         <input type="submit" value="Añadir Tarea">
     </form>
